@@ -24,16 +24,18 @@
 
         if ($isvalid) {
             $uploaded = true;
-            
+            $user = createUser($_POST);
+
             if (isset($_FILES['picture']) && $_FILES['picture']['name'] && $_FILES['picture']['size'] > 0 && $_FILES['picture']['size'] < 5000000 && $_FILES['picture']['error'] === 0) {
                 $uploaded = uploadImage($_FILES['picture'], $user);
-                $errors['upload'] = 'Error Uploading Image. Please Upload .png/.jpeg/.jpg Image';
             }
 
             if ($uploaded) {
-                $user = createUser($_POST);
                 header('location: index.php');
-            }     
+            } else {
+                deleteUser($user['id']);
+                $errors['upload'] = 'Error Uploading Image. Please Upload .png/.jpeg/.jpg Image';
+            }
             
         }
     }

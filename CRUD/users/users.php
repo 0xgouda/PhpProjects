@@ -64,14 +64,19 @@ function uploadImage($picture, $user) {
     if (!in_array($fileExtension, $allowedExtensions) || !in_array($fileMimeType, $allowedMimeTypes)) {
         return false;
     }
+    
+    if (!is_dir('./users/images/')) {
+        mkdir('./users/images/', 0644);
+    }
 
-    $destination = './users/images/' . $user['id'] . '.' . $extension;
+    $destination = './users/images/' . $user['id'] . '.' . $fileExtension;
     if (!move_uploaded_file($picture['tmp_name'], $destination)) {
         return false;
     }   
 
-    $user['extension'] = $extension;
+    
 
+    $user['extension'] = $fileExtension;
     updateUser($user, $user['id']);
     return true;
 }
