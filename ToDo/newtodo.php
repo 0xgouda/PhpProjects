@@ -10,7 +10,7 @@
             $loweredTodoName = strtolower($todoName);
             if (!isset($todos[$loweredTodoName])) {
                 $todos[$loweredTodoName] = ['completed' => false, "name" => $todoName];
-                putTodos($todos);
+                putJson($todos);
                 return true;
             }
         }
@@ -26,9 +26,16 @@
         $todos = getTodos();
         unset($todos[strtolower($todoName)]);
         array_values($todos);
-        putTodos($todos);
+        putJson($todos);
     }
 
-    function putTodos($todos) {
+    function putJson($todos) {
         file_put_contents('./todo.json', json_encode($todos, JSON_PRETTY_PRINT));
+    }
+
+    function changeState() {
+        $todoName = htmlspecialchars_decode($_POST['change']);
+        $todos = getTodos();
+        $todos[strtolower($todoName)]['completed'] = !$todos[strtolower($todoName)]['completed'];
+        putJson($todos);
     }

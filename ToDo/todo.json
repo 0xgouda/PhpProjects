@@ -10,5 +10,9 @@
     "family": {
         "completed": false,
         "name": "Family"
+    },
+    "study": {
+        "completed": true,
+        "name": "Study"
     }
 }

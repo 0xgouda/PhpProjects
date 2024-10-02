@@ -1,11 +1,15 @@
 <?php
     require './newtodo.php';
 
+    $saved = true;
+    
     if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['todo_name'])) {
             $saved = saveTodo();
         } elseif (isset($_POST['delete'])) {
             deleteTask();
+        } elseif (isset($_POST['change'])) {
+            changeState();
         }
     }
 
@@ -31,7 +35,7 @@
             <div class="card-body text-center">
                 <form action="" method="POST" class="form">
                     <input type="text" name="todo_name" placeholder="New Todo" required 
-                        class="<?= isset($saved) && $saved ? '' : 'is-invalid'; ?> w-75">
+                        class="<?= $saved ? '' : 'is-invalid'; ?> w-75">
                     <div class="invalid-feedback">
                         Task already exists
                     </div>
@@ -42,18 +46,27 @@
         </div>
     </div>
 
-    <div class="container mt-3 w-25">
+    <div class="container mt-3 w-50">
         <table class="table table-bordered">
             <thead class="table-primary">
                 <th class="w-25">Task</th>
                 <th>Completeion</th>
+                <th>Change?</th>
                 <th>Remove</th>
             </thead>
             <tbody>
                 <?php foreach ($todos as $todo => $valuesArr): ?>
                     <tr>
                         <td><?= htmlspecialchars($valuesArr["name"]); ?></td>
-                        <td><?= $valuesArr["completed"] ? 'Done' : 'Waiting'; ?></td>
+                        <td>
+                            <?= $valuesArr["completed"] ? 'Done' : 'Waiting'; ?>
+                        </td>
+                        <td>
+                            <form action="" method="POST">
+                                <input type="hidden" name="change" value="<?= htmlspecialchars($valuesArr["name"]);?>">
+                                <button class="btn btn-success"><?= $valuesArr["completed"] ? 'Waiting' : 'Done' ?></button>
+                            </form>
+                        </td>
                         <td>
                             <form action="" method="POST">
                                 <input type="hidden" name="delete" value="<?= htmlspecialchars($valuesArr["name"]);?>">
