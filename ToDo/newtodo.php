@@ -1,5 +1,5 @@
 <?php
-    function saveTodo(): bool {
+    function saveTodo(): ?bool {
         $todoName = trim($_POST['todo_name']);
         if ($todoName) {
             $todos = [];
@@ -13,15 +13,16 @@
                 putJson($todos);
                 return true;
             }
+            return false;
         }
-        return false;
+        return null;
     }
 
     function getTodos() {
         return json_decode(file_get_contents('./todo.json'), true);
     }
 
-    function deleteTask() {
+    function deleteTask(): void {
         $todoName = htmlspecialchars_decode($_POST['delete']);
         $todos = getTodos();
         unset($todos[strtolower($todoName)]);
@@ -29,11 +30,11 @@
         putJson($todos);
     }
 
-    function putJson($todos) {
+    function putJson($todos): void {
         file_put_contents('./todo.json', json_encode($todos, JSON_PRETTY_PRINT));
     }
 
-    function changeState() {
+    function changeState(): void {
         $todoName = htmlspecialchars_decode($_POST['change']);
         $todos = getTodos();
         $todos[strtolower($todoName)]['completed'] = !$todos[strtolower($todoName)]['completed'];

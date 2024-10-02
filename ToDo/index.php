@@ -1,7 +1,7 @@
 <?php
     require './newtodo.php';
 
-    $saved = true;
+    
     
     if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['todo_name'])) {
@@ -35,7 +35,7 @@
             <div class="card-body text-center">
                 <form action="" method="POST" class="form">
                     <input type="text" name="todo_name" placeholder="New Todo" required 
-                        class="<?= $saved ? '' : 'is-invalid'; ?> w-75">
+                        class="<?= isset($saved)? ($saved? '' : 'is-invalid') : ''; ?> w-75">
                     <div class="invalid-feedback">
                         Task already exists
                     </div>
