@@ -1,10 +1,10 @@
 <?php 
-    if ($_SERVER['REQUEST_URI'] === '/login.php') {
+    if (getFileName()=== 'login.php') {
         $path = 'Login';
         $error = 'Invalid Username or Password.';
-    } elseif ($_SERVER['REQUEST_URI'] === '/register.php') {
+    } elseif (getFileName() === 'register.php') {
         $path = 'Register';
-        $error = 'Username already exists';
+        $error = "Please Fill all Fields or Choose another Username";
     }
 ?>
 

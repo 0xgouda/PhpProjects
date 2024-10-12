@@ -1,5 +1,5 @@
 <?php 
-$path = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
+$path = getFileName();
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $path = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
                 <div class="card-body">
                     <?php require 'templates/errors.php' ?>
                     
-                    <?php if ($path === '/edit-article.php' && $success): ?>
+                    <?php if ($path === 'edit-article.php' && $success): ?>
                         <div class="alert alert-success py-2" role="success">
                             <ul class="mb-0 small">
                                 <?php foreach ($success as $successName => $successBody): ?>
@@ -32,7 +32,7 @@ $path = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
                     <?php endif; ?>
 
                     <h5 class="card-title mb-3 text-center">
-                        <?php if ($path === '/new-article.php'): ?>                                
+                        <?php if ($path === 'new-article.php'): ?>                                
                             Write Article
                         <?php else: ?>
                             Edit Article
@@ -42,7 +42,7 @@ $path = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
                         <div class="mb-3">
                             <label for="new-article-title" class="form-label">Title:</label>
                             <input type="text" class="form-control form-control-sm" id="new-article-title" name="new-article-title"
-                                value="<?= isset($articleData)? htmlEscape($articleData['title']) : '' ?>">
+                                value="<?= (isset($articleData)? htmlEscape($articleData['title']) : '') ?>">
                         </div>
                         <div class="mb-3">
                             <label for="new-article-body" class="form-label">Content:</label>

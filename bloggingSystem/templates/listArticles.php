@@ -1,5 +1,5 @@
 <?php 
-    $path = $_SERVER['REQUEST_URI'];
+    $path = getFileName();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,7 @@
     <div class="container py-4">
         <?php require 'templates/title.php'; ?>
 
-        <?php if ($path === '/account.php'): ?>
+        <?php if ($path === 'account.php'): ?>
             <h1 class="text-center text-success">Your Articles.</h1>
         <?php endif; ?>
 
@@ -29,7 +29,7 @@
                                     <?= htmlEscape($article['title']); ?>
                                 </h2>
                                 <p class="card-text text-muted small">
-                                    <?php if ($path === '/index.php'): ?>
+                                    <?php if ($path === 'index.php'): ?>
                                         Author: <?= htmlEscape(getArticleOwner($pdo, $article['id'])); ?>
                                         <br>
                                     <?php endif; ?>
@@ -42,7 +42,7 @@
                             </div>
                             <div class="card-footer bg-transparent border-top-0">
                                 <a href="view-article.php?article_id=<?= $article['id']; ?>" class="btn btn-primary">Read more</a>
-                                <?php if (isLoggedIn() && getArticleOwner($pdo, $article['id']) === getUserName()): ?>
+                                <?php if (getArticleOwner($pdo, $article['id']) === getAuthUser()): ?>
                                     <a href="edit-article.php?article_id=<?= $article['id']; ?>" class="btn btn-success">Edit</a>
                                     <form action="delete.php" method="POST" class="d-inline">
                                         <button type="submit" name="article_id" value="<?= $article['id']; ?>" class="btn btn-danger">Delete</button>

@@ -2,19 +2,21 @@
 require_once 'lib/common.php';
 
 session_start();
-$pdo = getPDO();
-$article_id = $_GET['article_id'];
-$owner = getarticleOwner($pdo,  $article_id) === getUserName();
 
-if (!isLoggedIn() || !$article_id || !$owner) {
+$article_id = $_GET['article_id'];
+if (!isLoggedIn() || !(isset($_GET['article_id']) && is_numeric($_GET['article_id'])) ) {
     redirectAndExit('index.php');
 }
+
+$pdo = getPDO();
+$owner = getarticleOwner($pdo,  $article_id) === getUserName();
+if (!$owner) redirectAndExit('index.php');
 
 // Update article
 $errors  = $success = null;
 if ($_POST && count($_POST) === 2 
-    && array_key_exists('new-article-title', $_POST) 
-    && array_key_exists('new-article-body', $_POST)) {
+    && checkVar('new-article-title') 
+    && checkVar('new-article-body')) {
         
     if ($owner) {
         editarticle($pdo, $_POST['new-article-title'], $_POST['new-article-body'], $article_id);

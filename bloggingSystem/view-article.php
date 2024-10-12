@@ -17,7 +17,7 @@ if (!$row) redirectAndExit('index.php');
 
 // Add Comment
 $errors = null;
-if ($_POST) {
+if (checkVar('comment-text')) {
     $comment = $_POST['comment-text'];
 
     $errors = addCommentToArticle($pdo, $articleId, $comment);
@@ -63,7 +63,7 @@ $comments = getCommentsForArticle($pdo, $articleId);
                                     <strong><?= htmlEscape($comment['name']) ?></strong>
                                     <div>
                                         <small class="text-muted"><?= convertSqlDate($comment['created_at']) ?></small>
-                                        <?php if (isLoggedIn() && getUserName() === getArticleOwner($pdo, $articleId)): ?>
+                                        <?php if (getAuthUser() === getArticleOwner($pdo, $articleId)): ?>
                                             <form action="delete.php" method="POST" class="d-inline ms-2">
                                                 <input type="hidden" name="article_id" value="<?= $articleId ?>">
                                                 <button type="submit" class="btn btn-danger btn-sm" value="<?= $comment['id'] ?>" name="comment_id">Delete</button>

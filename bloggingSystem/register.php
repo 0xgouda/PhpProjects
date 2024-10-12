@@ -5,21 +5,25 @@ session_start();
 
 // Handle the form posting
 $username = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' 
-    && count($_POST) === 3
-    && isset($_POST['username']) 
-    && isset($_POST['password'])
-    && isset($_POST['confirm-password'])) {
-    
-    // init the db connection
-    $pdo = getPDO();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (
+        count($_POST) === 3
+        && checkVar('username')
+        && checkVar('password')
+        && checkVar('confirm-password')
+        && $_POST['password'] === $_POST['confirm-password']
+    ) {
 
-    $username = $_POST['username'];
-    $success = register($pdo, $username, $_POST['password']);
+        // init the db connection
+        $pdo = getPDO();
 
-    if ($success) {
-        redirectAndExit('login.php');
-    }
+        $username = $_POST['username'];
+        $success = register($pdo, $username, $_POST['password']);
+
+        if ($success) {
+            redirectAndExit('login.php');
+        }
+    } else $success = false;
 }
 
 require 'templates/login_regsiter.php';

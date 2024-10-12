@@ -17,7 +17,7 @@ function getPDO(): object {
 }
 
 function htmlEscape(string $html): string {
-    return htmlspecialchars($html, ENT_HTML5, 'UTF-8');
+    return htmlspecialchars($html, ENT_HTML5 | ENT_QUOTES, 'UTF-8');
 }
 
 function convertSqlDate(string $sqlDate) {
@@ -243,4 +243,12 @@ function deleteById(PDO $pdo, int $id, string $table): void {
 
 function getUserName() {
     return $_SESSION['logged_in_username'];
+}
+
+function getFileName() {
+    return basename($_SERVER['SCRIPT_FILENAME']);
+}
+
+function checkVar($var) {
+    return isset($_POST[$var]) && !empty($_POST[$var]);
 }
